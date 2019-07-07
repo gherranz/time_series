@@ -21,6 +21,7 @@ import csv
 import pandas as pd
 import json
 import xml
+from collections import OrderedDict, defaultdict
 
 # Import hash libraries
 import zlib as zlib
@@ -44,6 +45,9 @@ from libraries.data_management import *
 #from libraries.file_system import *
 # from libraries.log import *
 from libraries.plot_information import *
+from libraries.online_characterization import *
+from libraries.bridge import *
+from libraries.DTW import *
 
 # from log import *
 # from configuration_manager import *
@@ -53,3 +57,4 @@ from libraries.plot_information import *
 # Import graphical libraries
 import seaborn as sns
 import plotly as tls
+import matplotlib.pyplot as plt
