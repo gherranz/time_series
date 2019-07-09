@@ -22,4 +22,5 @@ from libraries import *
 # split_tool_program_name()
 # hide_aux_data_name()
 # get_times()
-get_cluster()
+# get_cluster()
+decision_tree()

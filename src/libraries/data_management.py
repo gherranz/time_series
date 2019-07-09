@@ -13,9 +13,33 @@ selected_fields = [DATE, AXIS_X_POS, AXIS_Y_POS, AXIS_Z_POS, SPDL_C_POS, SPDL_A_
                    AXIS_X_LOAD, AXIS_Y_LOAD, AXIS_Z_LOAD, SPINDLE_LOAD, CHATTER_EXIST, SEVERIDAD_X, SEVERIDAD_Y,
                    AXIS_OVERRIDE, SPINDLE_OVERRIDE, CYCLE_IS_ON]
 
-
+# selected_new_fields = [DATE, PROGRAM_NAME, PROG_BLK_NUM, SPINDLE_LOAD, TOOL_NUMBER, OPERATION_CODE]
+selected_new_fields = [PROGRAM_NAME, PROG_BLK_NUM, TOOL_NUMBER, OPERATION_CODE]
 
 def clean_data():
+
+    file_path = r'C:\TFM\data\weka\2018.csv'
+
+
+    with open(file_path, "r") as f:
+        reader = csv.reader(f)
+        i = next(reader)
+
+        delete_list = [x for x in i if x not in selected_new_fields]
+
+        df = pd.read_csv(file_path, header=0, delimiter=',')
+
+        for colName in delete_list:
+            try:
+                del df[colName]
+            except KeyError:
+                pass
+
+        df.to_csv(file_path, index=False)
+        del df
+        gc.collect()
+
+    return
 
     folders = os.listdir(PATH)
 
@@ -379,11 +403,13 @@ def split_tool_program_name():
 
 def split_aux_data_name():
 
-    file_path = r'C:\TFM\auxdata\hist.csv'
+    file_path = r'C:\TFM\auxdata\hist_protected.csv'
 
-    df = pd.read_csv(file_path, header=0, delimiter=',')
-    df.dropna(subset=[PROGRAM_NAME], axis=0, inplace=True)
+    df = pd.read_csv(file_path, header=0, delimiter=';')
 
+    print(df[PROGRAM_NAME])
+    # df.dropna(subset=[PROGRAM_NAME], axis=0, inplace=True)
+    #
     try:
         new_text = df[PROGRAM_NAME].str.split(os.sep).str[-1]
         # print(new_text)
@@ -399,7 +425,7 @@ def split_aux_data_name():
 
 def hide_aux_data_name():
 
-    path = file_path = r'C:\TFM\auxdata\hist.csv'
+    path = file_path = r'C:\TFM\auxdata\hist_protected.csv'
 
     df = pd.read_csv(file_path, header=0, delimiter=',')
     pgm_name = df[PROGRAM_NAME].unique()
@@ -409,10 +435,7 @@ def hide_aux_data_name():
 
     df[PROGRAM_NAME] = df[PROGRAM_NAME].apply(lambda x: str(zlib.adler32(x.encode('utf8'))))
 
-    df.to_csv(file_path, index=False)
-    del df
-    gc.collect()
-
+    print(df[PROGRAM_NAME])
     df.to_csv(file_path, index=False)
     del df
     gc.collect()

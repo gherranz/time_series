@@ -116,7 +116,7 @@ def get_times():
 def get_cluster():
 
     series = []
-    aux_file_path = r'C:\TFM\auxdata\hist.csv'
+    aux_file_path = r'C:\TFM\auxdata\hist_protected.csv'
     data_path = r'C:\TFM\data\2018\2018.csv'
 
     hierarchical_plot = r'C:\TFM\dtw\hierarchical_cluster.png'
@@ -127,13 +127,20 @@ def get_cluster():
 
     # print(df_aux[SEGMENT_BEGIN, SEGMENT_END][df_data[OPERATION_ID_NUMBER] == 4])
 
-    op_no = 8
-    begin_date = (df_aux[df_aux[OPERATION_ID_NUMBER] == op_no][SEGMENT_BEGIN])
-    end_date = (df_aux[df_aux[OPERATION_ID_NUMBER] == op_no][SEGMENT_END])
+    op_no = 12
+    program_number = 1108805036
+
+    # df1 = df[(df.a != -1) & (df.b != -1)]
+    # begin_date = (df_aux.loc[(df_aux[OPERATION_ID_NUMBER] == op_no)][SEGMENT_BEGIN])
+
+    begin_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
+                        & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_BEGIN])
+    end_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
+                       & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_END])
 
     data_index = begin_date.index
 
-    data_index = data_index[:30]
+    # data_index = data_index[:30]
 
     for item in data_index:
         if item > YEAR_INDEX_LIMIT:
@@ -142,20 +149,27 @@ def get_cluster():
             series_begin = begin_date[item]
             series_end = end_date[item]
             aux_series = df_data.loc[(df_data[DATE] >= series_begin) & (df_data[DATE] <= series_end)]
-            df_spload = aux_series[SPINDLE_LOAD]
-            df_spload = np.array(df_spload)
-            series.append(df_spload)
+            if not aux_series.empty:
+                df_spload = aux_series[SPINDLE_LOAD]
+                df_spload = np.array(df_spload)
+                series.append(df_spload)
 
     # Custom Hierarchical clustering
     model1 = clustering.Hierarchical(dtw.distance_matrix_fast, {})
     cluster_idx = model1.fit(series)
 
-    # Augment Hierarchical object to keep track of the full tree
-    model2 = clustering.HierarchicalTree(model1)
-    cluster_idx = model2.fit(series)
-    model2.plot(hierarchical_plot, show_tr_label=True)
-
+    try:
+        # Augment Hierarchical object to keep track of the full tree
+        model2 = clustering.HierarchicalTree(model1)
+        cluster_idx = model2.fit(series)
+        model2.plot(hierarchical_plot, show_tr_label=True)
+    except Exception as ex:
+        print(ex)
     # SciPy linkage clustering
-    model3 = clustering.LinkageTree(dtw.distance_matrix_fast, {})
-    cluster_idx = model3.fit(series)
-    model3.plot(linkage_plot, show_tr_label=True)
+    try:
+        model3 = clustering.LinkageTree(dtw.distance_matrix_fast, {})
+        cluster_idx = model3.fit(series)
+        model3.plot(linkage_plot, show_tr_label=True)
+    except Exception as ex:
+        print(ex)
+

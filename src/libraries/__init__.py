@@ -48,6 +48,7 @@ from libraries.plot_information import *
 from libraries.online_characterization import *
 from libraries.bridge import *
 from libraries.DTW import *
+from libraries.decission_tree import *
 
 # from log import *
 # from configuration_manager import *
