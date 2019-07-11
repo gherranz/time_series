@@ -25,14 +25,15 @@ def clean_data():
         reader = csv.reader(f)
         i = next(reader)
 
-        delete_list = [x for x in i if x not in selected_new_fields]
+        delete_list = [x for x in i if x not in selected_fields]
 
         df = pd.read_csv(file_path, header=0, delimiter=',')
 
         for colName in delete_list:
             try:
                 del df[colName]
-            except KeyError:
+            except KeyError as ke:
+                print(ke)
                 pass
 
         df.to_csv(file_path, index=False)

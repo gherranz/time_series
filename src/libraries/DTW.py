@@ -83,14 +83,20 @@ def get_times():
     # print(df_aux[SEGMENT_BEGIN, SEGMENT_END][df_data[OPERATION_ID_NUMBER] == 4])
 
     op_no = 8
-    begin_date = (df_aux[df_aux[OPERATION_ID_NUMBER] == op_no][SEGMENT_BEGIN])
-    end_date = (df_aux[df_aux[OPERATION_ID_NUMBER] == op_no][SEGMENT_END])
+    program_number = 1108805036
 
+    begin_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
+                         & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_BEGIN])
+    end_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
+                       & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_END])
 
-    series1_begin = begin_date[0]
-    series1_end = end_date[0]
-    series2_begin = begin_date[41]
-    series2_end = end_date[41]
+    data_index = begin_date.index
+    print(data_index)
+    return
+    series1_begin = begin_date[data_index[0]]
+    series1_end = end_date[data_index[0]]
+    series2_begin = begin_date[data_index[1]]
+    series2_end = end_date[data_index[1]]
 
     series_1 = df_data.loc[(df_data[DATE] >= series1_begin) & (df_data[DATE] <= series1_end)]
     series_2 = df_data.loc[(df_data[DATE] >= series1_begin) & (df_data[DATE] <= series1_end)]
@@ -106,7 +112,6 @@ def get_times():
     # series_2.plot(kind='line', x=DATE, y=SPINDLE_LOAD, color='red', ax=ax)
     # plt.show()
 
-    print(type(df_spload_1))
     df_spload_1 = df_spload_1.values
     df_spload_2 = df_spload_2.values
     print_dtw(df_spload_1, df_spload_2, output_path)

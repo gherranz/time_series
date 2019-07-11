@@ -49,6 +49,7 @@ from libraries.online_characterization import *
 from libraries.bridge import *
 from libraries.DTW import *
 from libraries.decission_tree import *
+from libraries.k_means import *
 
 # from log import *
 # from configuration_manager import *

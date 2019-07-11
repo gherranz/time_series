@@ -23,4 +23,5 @@ from libraries import *
 # hide_aux_data_name()
 # get_times()
 # get_cluster()
-decision_tree()
+# decision_tree()
+k_means_model()
