@@ -18,6 +18,9 @@ plot_path = r'C:\TFM\data\weka\machine.png'
 
 
 def decision_tree():
+    """
+    This function is used to get a decision tree with the data used.
+    """
 
     machine = pd.read_csv(file_path, header=0, delimiter=',')
     print(machine.head())

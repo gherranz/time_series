@@ -1,3 +1,6 @@
+"""
+Circular logger to get the trace where is necessary get extra information about the process
+"""
 from libraries import *
 
 INFO_LOG_FILENAME = 'info_log.log'

@@ -12,36 +12,68 @@ output_path = r'C:\TFM\dtw\dtw_full.png'
 output_matrix = r'C:\TFM\dtw\dtw_matrix%s.png'
 
 
+def roundup(x):
+    """
+    Function used to round up the value
+
+    :param x: value to round
+    :return: value rounded up
+    """
+    return x if x % 100 == 0 else x - (x % 100)
+
+
 def print_dtw(series_1, series_2, output_path):
+    """
+    Function to draw the DTW for two different time series
+
+    :param series_1: First time serie to compare
+    :param series_2: Second time serie to compare
+    :param output_path: Path where the pictures will be stored
+    """
+
+    len1 = roundup(series_1.__len__())
+    len2 = roundup(series_2.__len__())
 
     contador = 0
     series_1 = series_1
     series_2 = series_2
-    # series_1 = series_1[:1200]
-    # series_2 = series_2[:1200]
-    # series_1 = np.split(series_1, 12)
-    # series_2 = np.split(series_2, 12)
+    series_1 = series_1[:len1]
+    series_1 = np.split(series_1, int(len1/100))
+    series_2 = series_2[:len2]
+    series_2 = np.split(series_2, int(len2/100))
 
-    # for i in range(len(series_1)):
-    #     path = dtw.warping_path(series_1[i], series_2[i])
-    #     dtwvis.plot_warping(series_1[i], series_2[i], path, filename=output_path % contador)
-    #     contador +=1
+    for i in range(series_1.__len__()):
+        path = dtw.warping_path(series_1[i], series_2[i])
+        print(path)
+        dtwvis.plot_warping(series_1[i], series_2[i], path, filename=output_path % contador)
+        contador +=1
 
-    path = dtw.warping_path(series_1, series_2)
-    dtwvis.plot_warping(series_1, series_2, path, filename=output_path)
-
-
+    # print(series_1)
+    # path = dtw.warping_path(series_1, series_2)
+    # print(path)
+    # dtwvis.plot_warping(series_1, series_2, path, filename=output_path)
 
 
 def print_dtw_matrix(series_1, series_2, output_matrix):
+    """
+    Function to print dtw distance matrix
+
+    :param series_1: First time series to compare
+    :param series_2: Second time series to compare
+    :param output_matrix: path / file where output matrix will be stored
+    """
 
     contador = 0
-    series_1 = series_1[:1200]
-    series_2 = series_2[:1200]
-    series_1 = np.split(series_1, 12)
-    series_2 = np.split(series_2, 12)
 
-    for i in range(len(series_1)):
+    len1 = roundup(series_1.__len__())
+    len2 = roundup(series_2.__len__())
+
+    series_1 = series_1[:len1]
+    series_2 = series_2[:len2]
+    series_1 = np.split(series_1, int(len1/100))
+    series_2 = np.split(series_2, int(len2/100))
+
+    for i in range(series_1.__len__()):
         d, paths = dtw.warping_paths(series_1[i], series_2[i], window=25, psi=5)
         best_path = dtw.best_path(paths)
         dtwvis.plot_warpingpaths(series_1[i], series_2[i], paths, best_path, filename=output_matrix % contador)
@@ -70,11 +102,13 @@ def print_dtw_matrix(series_1, series_2, output_matrix):
 #     gc.collect()
 
 
-
-
 def get_times():
+    """
+    Function to get start time and end time for each operation this is to get the second
+    characterization table.
+    """
 
-    aux_file_path = r'C:\TFM\auxdata\hist.csv'
+    aux_file_path = r'C:\TFM\auxdata\hist_protected.csv'
     data_path = r'C:\TFM\data\2018\2018.csv'
 
     df_aux = pd.read_csv(aux_file_path, header=0, delimiter=',', parse_dates=[SEGMENT_BEGIN, SEGMENT_END])
@@ -82,7 +116,7 @@ def get_times():
 
     # print(df_aux[SEGMENT_BEGIN, SEGMENT_END][df_data[OPERATION_ID_NUMBER] == 4])
 
-    op_no = 8
+    op_no = 28
     program_number = 1108805036
 
     begin_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
@@ -91,8 +125,7 @@ def get_times():
                        & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_END])
 
     data_index = begin_date.index
-    print(data_index)
-    return
+
     series1_begin = begin_date[data_index[0]]
     series1_end = end_date[data_index[0]]
     series2_begin = begin_date[data_index[1]]
@@ -114,11 +147,16 @@ def get_times():
 
     df_spload_1 = df_spload_1.values
     df_spload_2 = df_spload_2.values
+
     print_dtw(df_spload_1, df_spload_2, output_path)
     print_dtw_matrix(df_spload_1, df_spload_2, output_matrix)
 
 
 def get_cluster():
+    """
+    Function to get the clustering for the time series getting the distances between
+    each operation.
+    """
 
     series = []
     aux_file_path = r'C:\TFM\auxdata\hist_protected.csv'
@@ -132,12 +170,13 @@ def get_cluster():
 
     # print(df_aux[SEGMENT_BEGIN, SEGMENT_END][df_data[OPERATION_ID_NUMBER] == 4])
 
-    op_no = 12
+    op_no = 28
     program_number = 1108805036
 
     # df1 = df[(df.a != -1) & (df.b != -1)]
     # begin_date = (df_aux.loc[(df_aux[OPERATION_ID_NUMBER] == op_no)][SEGMENT_BEGIN])
 
+    # Get begin date and end date for each time serie corresponding to the
     begin_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)
                         & (df_aux[PROGRAM_NAME] == program_number)][SEGMENT_BEGIN])
     end_date = (df_aux[(df_aux[OPERATION_ID_NUMBER] == op_no)

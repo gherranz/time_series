@@ -7,6 +7,9 @@ from bokeh.palettes import viridis
 from bokeh.models import CategoricalColorMapper, ColumnDataSource
 
 def plot_block_number():
+    """
+    Function to plot the block numbers in a defined time period.
+    """
 
     df = pd.read_csv(r'C:\TFM\data\2018\03.csv', header=0, delimiter=',', parse_dates=['Date'])
     # df['Cnc_Tool_Number_RT'] = df['Cnc_Tool_Number_RT'].astype(str)

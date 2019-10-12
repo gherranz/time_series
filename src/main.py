@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+"""
+All the code below is prepared to executed step by step
+in the way to learn the process of data cleaning.
+
+The functions are written in the correct order to execute the
+software. Please follow the order in the way to be successful.
+"""
 
 from libraries import *
 

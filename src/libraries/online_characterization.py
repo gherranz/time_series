@@ -1,3 +1,6 @@
+"""
+This script generates the online characterization included in the machine
+"""
 from libraries import *
 from libraries.bridge import *
 
@@ -18,6 +21,11 @@ output_json = r'C:\TFM\data\characterization\online_output.json'
 
 
 def find_tool_call(file_content, keyword=KEYWORD_TCALL):
+    """
+    This function gets all the calls for different tools
+    :param file_content: Complete file text where the keyword has to be found.
+    :param keyword: this value defines the word to match and find in the file.
+    """
 
     cursor = 0
     keyword_position = []
@@ -36,6 +44,10 @@ def find_tool_call(file_content, keyword=KEYWORD_TCALL):
 
 
 def operation_characterization():
+
+    """
+    Function to generate the characterization table in json format.
+    """
 
     active_pgm = ''
 
@@ -72,7 +84,6 @@ def operation_characterization():
             operation_type = -1
             print(ex)
             print('Execution environment is not CNC')
-
 
         diccionario['Program'] = act_pgm_name
         diccionario['Tool'] = tool_number

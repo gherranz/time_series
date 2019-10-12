@@ -17,7 +17,14 @@ selected_fields = [DATE, AXIS_X_POS, AXIS_Y_POS, AXIS_Z_POS, SPDL_C_POS, SPDL_A_
 selected_new_fields = [PROGRAM_NAME, PROG_BLK_NUM, TOOL_NUMBER, OPERATION_CODE]
 
 def clean_data():
+    """
+    Function to prepare the data and leave the file only with necessary
+    columns in the csv.
 
+    Inside the function different ways of reading the files are used.
+    Many functionalities have been developed depending the way to read
+    the files.
+    """
     file_path = r'C:\TFM\data\weka\2018.csv'
 
 
@@ -84,6 +91,11 @@ def clean_data():
 
 
 def join_csv_files():
+    """
+    This function is used to concatenate different csv files into one.
+    Useful when multiple data sources are going to be used under one unique
+    file.
+    """
 
     extension = 'csv'
     folders = os.listdir(PATH)
@@ -102,6 +114,11 @@ def join_csv_files():
 
 
 def split_program_name():
+    """
+    Program can be stored including the path or without it.
+    The function takes the program name and deletes from the program name
+    the path.
+    """
 
     folders = os.listdir(PATH)
 
@@ -129,6 +146,10 @@ def split_program_name():
 
 
 def hide_program_name():
+    """
+    For security reasons the program name is hashed to avoid including
+    critical and sensitive data.
+    """
 
     folders = os.listdir(PATH)
 
@@ -157,6 +178,10 @@ def hide_program_name():
 
 
 def update_time():
+    """
+    This function converts the time recorded in the database to year, month
+    day.
+    """
 
     folders = os.listdir(PATH)
 
@@ -183,6 +208,9 @@ def update_time():
 
 
 def split_csv_by_months():
+    """
+    This function splits entire csv (one year csv) into monthly csv.
+    """
     folders = os.listdir(PATH)
 
     for item in folders:
@@ -207,11 +235,17 @@ def split_csv_by_months():
 
 
 def load_data():
+    """
+    Function to load data from a CSV.
+    """
     df = pd.read_csv(r'J:\TFM\SW\BCK\data\2016\07.csv', header=0, delimiter=',')
     print(df[PROGRAM_NAME].isnull().equals(True))
 
 
 def replace_program_name():
+    """
+    Function to replace the name of the program to apply a hash to the name.
+    """
 
     PATH = r'C:\TFM\data\year'
 
@@ -256,6 +290,9 @@ def replace_program_name():
 
 
 def int_cycle_is_on():
+    """
+    Function that cast into integer if the cycle has been on or off
+    """
 
     PATH = r'C:\TFM\data\year'
 
@@ -290,6 +327,10 @@ def int_cycle_is_on():
 
 
 def get_tool_op(row):
+    """
+    Function to get tool operation id
+    :param row: row number in the CSV file
+    """
 
     PATH = r'C:\TFM\tool\tool.csv'
     df = pd.read_csv(PATH, header=0, delimiter=',')
@@ -297,6 +338,9 @@ def get_tool_op(row):
 
 
 def add_tool_operation():
+    """
+    Function to add the tool operation into the main csv
+    """
 
     PATH = r'C:\TFM\data'
     PATH2 = r'C:\TFM\tool\tool.csv'
@@ -336,6 +380,9 @@ def add_tool_operation():
 
 
 def join_all_years():
+    """
+    Function to join all year csv into one unique CSV
+    """
 
     extension = 'csv'
     path = r'C:\TFM\data\year'
@@ -353,6 +400,10 @@ def join_all_years():
 
 
 def characterization_table():
+    """
+    Function to make a characterization table, to get block numbers
+    grouped by program names and tool number, getting a characterization table.
+    """
 
     file_path = r'C:\TFM\data\2018\10.csv'
     output_file_csv = r'C:\TFM\data\output_2018_10.csv'
@@ -380,6 +431,10 @@ def characterization_table():
 
 
 def split_tool_program_name():
+    """
+    This function cleans the tool appendix from the auxiliary data, this cleaning is
+    necessary to continue with the characterization table
+    """
     file_path = r'C:\TFM\auxdata\hist.csv'
 
     df = pd.read_csv(file_path, header=0, delimiter=',')
@@ -403,6 +458,9 @@ def split_tool_program_name():
 
 
 def split_aux_data_name():
+    """
+    Function to split protected data name.
+    """
 
     file_path = r'C:\TFM\auxdata\hist_protected.csv'
 
@@ -425,6 +483,9 @@ def split_aux_data_name():
 
 
 def hide_aux_data_name():
+    """
+    Function to hide auxiliar data program name.
+    """
 
     path = file_path = r'C:\TFM\auxdata\hist_protected.csv'
 

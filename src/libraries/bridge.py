@@ -1,3 +1,7 @@
+"""
+This file contains the all the constants to work correctly with the data frames
+"""
+
 # ======================================================
 # COLUMN DEFINITION FOR DATA SET
 # ======================================================

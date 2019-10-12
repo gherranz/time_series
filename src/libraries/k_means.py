@@ -21,48 +21,42 @@ test_path = r'C:\TFM\data\weka\machine_test_2.csv'
 
 
 def k_means_model():
+    """
+    Function to generate a K-means model with the necessary data.
+    """
 
     # Load the train and test datasets to create two DataFrames
-
-    feature_cols = [PROGRAM_NAME, PROG_BLK_NUM, TOOL_NUMBER]
-
     train = pd.read_csv(train_path)
     test = pd.read_csv(test_path)
 
-    print("***** Train_Set *****")
-    print(train.head())
-    print("\n")
-    print("***** Test_Set *****")
-    print(test.head())
-
-    print("***** Train_Set *****")
-    print(train.describe())
-    print("\n")
-    print("***** Test_Set *****")
-    print(test.describe())
-
-    print("*****In the train set*****")
-    print(train.isna().sum())
-    print("\n")
-    print("*****In the test set*****")
-    print(test.isna().sum())
+    # print("***** Train_Set *****")
+    # print(train.head())
+    # print("\n")
+    # print("***** Test_Set *****")
+    # print(test.head())
+    #
+    # print("***** Train_Set *****")
+    # print(train.describe())
+    # print("\n")
+    # print("***** Test_Set *****")
+    # print(test.describe())
+    #
+    # print("*****In the train set*****")
+    # print(train.isna().sum())
+    # print("\n")
+    # print("*****In the test set*****")
+    # print(test.isna().sum())
 
     # Fill missing values with mean column values in the train set
     train.fillna(train.mean(), inplace=True)
     # Fill missing values with mean column values in the test set
     test.fillna(test.mean(), inplace=True)
 
-    print(train.isna().sum())
-    print(test.isna().sum())
-
     X = np.array(train.drop(['CNC_Operation_Code'], 1).astype(int))
     y = np.array(train['CNC_Operation_Code'])
 
     kmeans = KMeans(n_clusters=len(class_names))  # You want cluster the passenger records into 2: Survived or Not survived
     kmeans.fit(X)
-
-    train.info()
-    test.info()
 
     KMeans(algorithm='auto', copy_x=True, init='k-means++', max_iter=300,
            n_clusters=len(class_names), n_init=10, n_jobs=1, precompute_distances='auto',
@@ -78,7 +72,7 @@ def k_means_model():
 
     print(correct / len(X))
 
-    kmeans = kmeans = KMeans(n_clusters=len(class_names), max_iter=600, algorithm='auto')
+    kmeans = KMeans(n_clusters=len(class_names), max_iter=600, algorithm='auto')
     kmeans.fit(X)
 
     KMeans(algorithm='auto', copy_x=True, init='k-means++', max_iter=600,
@@ -101,7 +95,7 @@ def k_means_model():
     kmeans.fit(X_scaled)
 
     KMeans(algorithm='auto', copy_x=True, init='k-means++', max_iter=600,
-           n_clusters=2, n_init=10, n_jobs=1, precompute_distances='auto',
+           n_clusters=len(class_names), n_init=10, n_jobs=1, precompute_distances='auto',
            random_state=None, tol=0.0001, verbose=0)
 
     correct = 0
